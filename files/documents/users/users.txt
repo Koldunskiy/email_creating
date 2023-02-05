@@ -1,0 +1,8 @@
+nmm: 2023-02-05 17:35:11.721859
+{"message_id": 1266, "from": {"id": 1739851287, "is_bot": false, "first_name": "nmm", "username": "ssadnmm", "language_code": "ru", "is_premium": true}, "chat": {"id": 1739851287, "first_name": "nmm", "username": "ssadnmm", "type": "private"}, "date": 1675618510, "text": "/start", "entities": [{"type": "bot_command", "offset": 0, "length": 6}]}
+nmm: 2023-02-05 17:51:58.351937
+{"message_id": 1268, "from": {"id": 1739851287, "is_bot": false, "first_name": "nmm", "username": "ssadnmm", "language_code": "ru", "is_premium": true}, "chat": {"id": 1739851287, "first_name": "nmm", "username": "ssadnmm", "type": "private"}, "date": 1675619517, "text": "/start", "entities": [{"type": "bot_command", "offset": 0, "length": 6}]}
+nmm: 2023-02-05 18:08:10.778783
+{"message_id": 1278, "from": {"id": 1739851287, "is_bot": false, "first_name": "nmm", "username": "ssadnmm", "language_code": "ru", "is_premium": true}, "chat": {"id": 1739851287, "first_name": "nmm", "username": "ssadnmm", "type": "private"}, "date": 1675620489, "text": "/start", "entities": [{"type": "bot_command", "offset": 0, "length": 6}]}
+nmm: 2023-02-05 18:08:54.950498
+{"message_id": 1280, "from": {"id": 1739851287, "is_bot": false, "first_name": "nmm", "username": "ssadnmm", "language_code": "ru", "is_premium": true}, "chat": {"id": 1739851287, "first_name": "nmm", "username": "ssadnmm", "type": "private"}, "date": 1675620534, "text": "/start", "entities": [{"type": "bot_command", "offset": 0, "length": 6}]}
