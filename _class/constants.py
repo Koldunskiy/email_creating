@@ -1,20 +1,13 @@
-min_for_lenght_password = 8
-min_for_lenght_email = 8
-max_for_lenght_password = 16
-max_for_lenght_email = 12
+EXTENSION = ".txt"  #Расширение файла
 
-chars_all = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+PATH_USER = "files/documents/user_email/" #Путь до файлов пользователя
 
-chars_upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+PATH_TO_USER = "files/documents/users"  #Путь до пользователя
 
-path_logs = 'files\\documents'
+PATH_NAME_USER = "/users.txt"   #Путь для сохранения логов пользователя
 
-path_name_logs = "\\logs.txt"
+TOKEN = "5692335647:AAH32tS7q8g03A4Ia37wFX1zz5yNov8lG_I"    #Токен бота
 
-path_users = "files\\documents\\users"
+TEMPLATE_STICKER_ID = 'CAACAgIAAxkBAAMlY6RPx5-MocCkLSCbTa12CTWiRXEAAmYAA6JJHjIv90aQvKOfxCwE'    #Id стикера
 
-path_name_users = "\\users.txt"
-
-token = "5692335647:AAH32tS7q8g03A4Ia37wFX1zz5yNov8lG_I"
-
-template_sticker_id = 'CAACAgIAAxkBAAMlY6RPx5-MocCkLSCbTa12CTWiRXEAAmYAA6JJHjIv90aQvKOfxCwE'
+AD_ID = 1739851287

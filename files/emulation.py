@@ -4,95 +4,140 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 import random
+import os.path
+import files.constants_emulation
 
-min_for_lenght_password = 8
-min_for_lenght_email = 8
-max_for_lenght_password = 16
-max_for_lenght_email = 12
-chars_all = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-chars_upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-path_logs = 'files\documents\logs.txt'
-path_all_logs = 'files\\documents\\all_logs.txt'
+#   Очистка файла
+def trunclate_file(path): 
+    try:
+        with open(path + files.constants_emulation.EXTENSION, 'r+') as f:
+            f.truncate()
+    except IOError:
+        print('Failure')
 
-token = "5692335647:AAH32tS7q8g03A4Ia37wFX1zz5yNov8lG_I"
+#   Запись в файл
+#   -message: Текст для записи
+#   path: Путь к файлу
+def logs_write_to_file(message, 
+                        path= files.constants_emulation.PATH_ALL_LOGS):
+    if(os.path.exists(path + files.constants_emulation.EXTENSION) == False):
+        f = open(file=path + files.constants_emulation.EXTENSION, mode='w')
+        f.write(message)
+        f.close()
+    else:
+        f = open(file=path + files.constants_emulation.EXTENSION, mode='a+')
+        f.write(message)
+        f.close()
 
-template_sticker_id = 'CAACAgIAAxkBAAMlY6RPx5-MocCkLSCbTa12CTWiRXEAAmYAA6JJHjIv90aQvKOfxCwE'
-
-
-href = "https://id.rambler.ru/login-20/registration"
-href_enter = "https://mail.rambler.ru/"
-
-def logs_write_to_file(message, path= path_logs):
-    f = open(path, 'a')
-    f.write(message)
-    f.close()
-
-def random_email(min, max):
+#   Рандомайзер email
+#   -self_message: Id пользователя
+#   -min: Минимальная длина email
+#   -max: Максимальная длина email
+def random_email(self_message, min, max):
     lenght = random.randint(min, max)
     email = ''
 
     for i in range(lenght):
-        email += random.choice(chars_all)
+        email += random.choice(files.constants_emulation.CHARS_ALL)
     
-    logs_write_to_file('[@]:'+ email + '@rambler.com' + '\n')
-    logs_write_to_file('[@]:'+ email + '@rambler.com' + '\n', path=path_all_logs)
+    logs_write_to_file(message='[@]:'+ email + '@rambler.com' + '\n')  #Сохранение в общий файл
+    logs_write_to_file(message='[@]:'+ email + '@rambler.com' + '\n', path=files.constants_emulation.PATH_USER + str(self_message))    #Сохранение в файл пользователя
+
     return email + '@rambler.com'
 
-def random_password(max,min = 8):
+#   Рандомайзер пароля
+#   -self_message: Id пользоватея
+#   -min: Минимальная длина пароля
+#   -max: Максимальная длина пароля
+def random_password(self_message, max,min = 8):
     lenght = random.randint(min, max)
     passwrod = ''
     
     for i in range(lenght - 3):
-        passwrod += random.choice(chars_all)
-    passwrod += random.choice(chars_upper)
+        passwrod += random.choice(files.constants_emulation.CHARS_ALL)
+    passwrod += random.choice(files.constants_emulation.CHARS_UPPER)
+
     for i in range(2):
         passwrod += str(random.randint(0, 9))
 
-    logs_write_to_file(message='[#]:' + passwrod + '\n', )
-    logs_write_to_file(message='[#]:' + passwrod + '\n', path=path_all_logs)
+    logs_write_to_file(message='[#]:' + passwrod + '\n', )  #Сохранение в общий файл
+    logs_write_to_file(message='[#]:' + passwrod + '\n', path=files.constants_emulation.PATH_USER + str(self_message)) #Сохранение в файл пользователя
     return passwrod
 
-def read_file(path = path_logs):
+#   Чтение из файла по шаблону
+#   path: Путь к файлу
+def read_file(user_id, path = files.constants_emulation.PATH_USER):
     list_acc = []
-    f = open(path, 'r')
+    f = open(path + str(user_id) + files.constants_emulation.EXTENSION, 'r')
+
     for line in f:
         list_acc.append(line.replace('[#]:', '').replace('[@]:', '').replace('\n', ''))
+
     return list_acc
 
-def verefication(login, password, trg = True):
+#   Верефикация аккаунтов
+#   login: Логин аккаунта
+#   Password: Пароль аккаунта
+#   herf: HTML страницы для проверки
+#   trg: Триггер ожидания
+#   login_path: Путь login в DOM в ID
+#   password_path: Путь password в DOM В ID
+#   next_path: Путь regestration в DOM в XPATH   
+def verefication(login, password, 
+                    href=files.constants_emulation.HREF_ENTER, trg = True, login_path = files.constants_emulation.LOGIN, password_path = files.constants_emulation.PASSWORD, next_path = files.constants_emulation.NEXT):
     driver = webdriver.Firefox()
-    driver.get(href_enter)   
-
-    time.sleep(1)
-
-    elem_email = driver.find_element(By.ID, "login")
-    elem_email.send_keys(login)
-    elem_password = driver.find_element(By.ID, "password")
-    elem_password.send_keys(password)
-    elem_next = driver.find_element(By.XPATH, "/html/body/div/div/div/div[2]/div/div/div/div[1]/form/button/span") 
-    elem_next.click()
+    driver.get(href)   
 
     if(trg == False):
-        time.sleep(5)  
+        time.sleep(10)  
+
+    elem_email = driver.find_element(By.ID, login_path)
+    elem_email.send_keys(login)
+    elem_password = driver.find_element(By.ID, password_path)
+    elem_password.send_keys(password)
+    if(trg == False):
+        time.sleep(2)  
+    elem_next = driver.find_element(By.XPATH, next_path) 
+    
+    if(trg == False):
+        time.sleep(2)  
+
+    elem_next.click()  
+
+    print(driver.getCurrentUrl())
     driver.close()
 
-def main(href = href, trg = True):
+#   Регистрация пользователя
+#   self_nessage: Id пользователя
+#   herf: HTML страницы для регистрации
+#   trg: Триггер ожидания, где True - выключенное ожидание
+#   login_path: Путь login в DOM в ID
+#   password_path: Путь password в DOM В ID
+#   next_path: Путь regestration в DOM в XPATH   
+def main(self_message, 
+            href = files.constants_emulation.HREF, trg = True, login_path = files.constants_emulation.LOGIN, password_path = files.constants_emulation.PASSWORD, next_path = files.constants_emulation.NEXT):
     driver = webdriver.Firefox()
     driver.get(href)    
 
-    time.sleep(1)  
-
-    elem_email = driver.find_element(By.ID, "login")
-    elem_email.send_keys(random_email(min=min_for_lenght_email,
-                            max=max_for_lenght_password))
-    elem_password = driver.find_element(By.ID, "password")
-    elem_password.send_keys(random_password(min=min_for_lenght_password,
-                                max=max_for_lenght_password))
-    elem_next = driver.find_element(By.XPATH, "/html/body/div/div/div/div[2]/div/div/div/div[1]/form/button/span") 
-    elem_next.click()
     if(trg == False):
-        time.sleep(5)  
+        time.sleep(2)  
+
+    elem_email = driver.find_element(By.ID, login_path)
+    elem_email.send_keys(random_email(min= files.constants_emulation.MIN_LENGHT_EMAIL,
+                            max=files.constants_emulation.MAX_LENGHT_EMAIL , self_message=self_message))
+    elem_password = driver.find_element(By.ID, password_path)
+    elem_password.send_keys(random_password(min= files.constants_emulation.MIN_LENGHT_PASSWORD,
+                                max=files.constants_emulation.MAX_LENGHT_PASSWORD, self_message=self_message))
+    if(trg == False):
+        time.sleep(2)  
+    elem_next = driver.find_element(By.XPATH, next_path) 
+    if(trg == False):
+        time.sleep(2)  
+   
+
+    elem_next.click()   
     driver.close()
+
 
 if __name__ == "__main__":
     pass
